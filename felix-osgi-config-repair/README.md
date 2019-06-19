@@ -11,3 +11,8 @@ Usage:
   e.g. output duplicate config files with deletion:
     java -jar felix-osgi-config-repair.jar launchpad/config --delete
 ```
+
+This is to address some scenarios with AEM and Apache Sling ins
+tallations where factory configs get duplicated when instances are copied withou
+t preserving timestamps.  In the past there were also some bugs that caused dupl
+icate factory configurations. For example: https://jira.apache.org/jira/browse/SLING-6313
