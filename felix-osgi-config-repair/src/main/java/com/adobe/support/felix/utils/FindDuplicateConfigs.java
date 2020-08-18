@@ -5,21 +5,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.*;
 
-import javax.xml.bind.DatatypeConverter;
 
 public class FindDuplicateConfigs {
-	
+
 	private static HashMap<String, ArrayList<String>> fileMap = new HashMap<String, ArrayList<String>>();
-	private static final String OPTION_DELETE = "--delete"; 
-	
+	private static final String OPTION_DELETE = "--delete";
+
 	public static void main(String[] args) {
 		File dir = null;
 		boolean deleteDuplicateFiles = false;
@@ -40,7 +35,7 @@ public class FindDuplicateConfigs {
 		} else {
 			String jarName = "felix-osgi-config-repair.jar";
 			System.out.println(
-					"Usage:\n" 
+					"Usage:\n"
 					+ "    java -jar " + jarName + " /path/to/config/directory [--delete]" + "\n\n"
 					+ "  e.g. output duplicate config files without deletion:" + "\n"
 					+ "    java -jar " + jarName + " launchpad/config" + "\n\n"
@@ -51,7 +46,7 @@ public class FindDuplicateConfigs {
 		if(!deleteDuplicateFiles) {
 			System.out.println("Note: No files will be deleted.");
 		}
-		
+
 		findDuplicateFiles(dir, deleteDuplicateFiles);
 	}
 
@@ -112,7 +107,7 @@ public class FindDuplicateConfigs {
 				for (File file : files) {
 					if (file.isFile()) {
 						String digest = createHashOfConfigFileContents(file);
-						
+
 						// Use hash of file contents as key (to find duplicates)
 						if (fileMap.containsKey(digest)) {
 							ArrayList<String> arr = fileMap.get(digest);
@@ -155,7 +150,7 @@ public class FindDuplicateConfigs {
 		while (iter.hasNext()) {
 			md.update(iter.next().getBytes());
 		}
-		String digest = DatatypeConverter.printHexBinary(md.digest());
+		String digest = Base64.getEncoder().encodeToString(md.digest());
 		return digest;
 	}
 
